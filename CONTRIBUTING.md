@@ -133,8 +133,6 @@ All branches must follow the pattern:
 If no issue is associated, the shorter form is acceptable:
 <type>/<short-description>
 
-
-
 ### Allowed Types
 
 | Type | Purpose |
