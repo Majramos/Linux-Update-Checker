@@ -21,8 +21,12 @@ uv sync
 ```bash
 python3 linux_update_checker --webhook <DISCORD_WEBHOOK_URL>
 ```
+or
+```bash
+uv run --env-file .env linux-update-checker
+```
 
-Or set the environment variable DISCORD_WEBHOOK_URL and run without flags.
+Or set the environment variable LUC_DISCORD_WEBHOOK_URL and run without flags.
 
 ### Cron setup example
 Cron example (every day at 08:00)
