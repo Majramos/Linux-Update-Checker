@@ -32,7 +32,7 @@ mypy_path = "src"
 explicit_package_bases = true
 
 [tool.pytest.ini_options]
-addopts = "--cov=bank_to_actualbudget --cov-report=term-missing"
+addopts = "--cov=linux_update_checker --cov-report=term-missing"
 testpaths = ["tests"]
 
 [tool.coverage.run]
