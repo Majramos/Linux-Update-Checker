@@ -24,7 +24,10 @@ check_format:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - uv run ruff format --check
-    - uv run ruff check
+    - uv run ruff check --output-format=gitlab --output-file=code-quality-report.json
+  artifacts:
+    reports:
+      codequality: $CI_PROJECT_DIR/code-quality-report.json
 
 # 2. Lint Stage: Mypy (Type Checking)
 type_check:
