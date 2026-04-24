@@ -40,7 +40,7 @@ type_check:
 run_tests:
   stage: test
   script:
-    - uv run pytest --junitxml=report.xml --cov-report=term-missing --cov-report=xml:coverage.xml
+    - uv run pytest --junitxml=report.xml --cov --cov-report=term-missing --cov-report=xml:coverage.xml
   coverage: '/TOTAL.*? (100(?:\\.0+)?\\%|[1-9]?\\d(?:\\.\\d+)?\\%)$/'
   artifacts:
     when: always
