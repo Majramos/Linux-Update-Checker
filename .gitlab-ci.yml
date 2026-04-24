@@ -1,52 +1,54 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+    - when: never
+
 stages:
-  - fmt
-  - style
+  - lint
   - test
 
 variables:
-  UV_CACHE_DIR: ".uv-cache"
+  UV_CACHE_DIR: "$CI_PROJECT_DIR/.uv-cache"
 
-# Default settings for all jobs to avoid repetition
 default:
   image: ghcr.io/astral-sh/uv:python3.11-bookworm-slim
   cache:
-    key: "uv-cache-$CI_COMMIT_REF_SLUG"
+    key:
+      files:
+        - uv.lock
     paths:
-      - .uv-cache
+      - .uv-cache/
   before_script:
     - uv sync --frozen
 
-# 1. Lint Stage: Ruff (Formatting & Linting)
 check_format:
-  stage: fmt
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  stage: lint
   script:
     - uv run ruff format --check
     - uv run ruff check --output-format=gitlab --output-file=code-quality-report.json
   artifacts:
+    when: always
     reports:
-      codequality: $CI_PROJECT_DIR/code-quality-report.json
+      codequality: code-quality-report.json
 
-# 2. Lint Stage: Mypy (Type Checking)
 type_check:
-  stage: style
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  stage: lint
   script:
     - uv run mypy
 
-# 3. Test Stage: Pytest & Coverage
 run_tests:
   stage: test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - uv run pytest --junitxml=report.xml
+    - uv run pytest --junitxml=report.xml --cov --cov-report=term --cov-report=xml:coverage.xml
+  coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     when: always
     reports:
       junit: report.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+    paths:
+      - report.xml
+      - coverage.xml
