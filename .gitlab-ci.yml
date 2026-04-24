@@ -1,0 +1,49 @@
+stages:
+  - fmt
+  - style
+  - test
+
+variables:
+  UV_CACHE_DIR: ".uv-cache"
+
+# Default settings for all jobs to avoid repetition
+default:
+  image: ghcr.io/astral-sh/uv:python3.11-bookworm-slim
+  cache:
+    key: "uv-cache-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .uv-cache
+  before_script:
+    - uv sync --frozen
+
+# 1. Lint Stage: Ruff (Formatting & Linting)
+check_format:
+  stage: fmt
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - uv run ruff format --check
+    - uv run ruff check
+
+# 2. Lint Stage: Mypy (Type Checking)
+type_check:
+  stage: style
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - uv run mypy
+
+# 3. Test Stage: Pytest & Coverage
+run_tests:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - uv run pytest --junitxml=report.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
