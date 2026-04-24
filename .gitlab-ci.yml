@@ -45,10 +45,15 @@ run_tests:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - uv run pytest --cov --cov-report term --cov-report xml:coverage.xml
+    - uv run pytest --junitxml=report.xml --cov --cov-report=term --cov-report=xml:coverage.xml
+  coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     when: always
     reports:
+      junit: report.xml
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+    paths:
+      - report.xml
+      - coverage.xml
