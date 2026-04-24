@@ -36,7 +36,7 @@ addopts = "--cov=linux_update_checker --cov-report=term-missing"
 testpaths = ["tests"]
 
 [tool.coverage.run]
-source = ["my_project"]
+source = ["linux_update_checker"]
 omit = ["tests/*", "**/__init__.py"]
 
 [tool.coverage.report]
