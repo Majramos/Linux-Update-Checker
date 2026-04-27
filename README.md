@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Python Badge](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff&style=flat)
-![Gitlab Pipeline Status](https://gitlab.com/majramos/linux-update-checke/badges/main/pipeline.svg)
+![Gitlab Pipeline Status](https://gitlab.com/majramos/linux-update-checker/badges/main/pipeline.svg)
 ![Gitlab Release](https://gitlab.com/majramos/linux-update-checker/-/badges/release.svg)
 ![Gitlab Coverage](https://gitlab.com/majramos/linux-update-checker/badges/main/coverage.svg)
 
