@@ -173,22 +173,56 @@ update_stuff                 # underscore + generic name
 
 ## Commit Messages
 
-Follow the [Conventional Commits](https://www.conventionalcommits.org/) format:
+This project uses the [Conventional Commits](https://www.conventionalcommits.org/) specification and the [Commitizen](https://commitizen-tools.github.io/commitizen/) tool for creating commit messages.
 
+When committing changes, use Commitizen instead of writing the commit message manually:
+
+```bash
+cz commit
+```
+
+Commitizen will guide you through the required fields and generate a commit message that matches the expected format.
+
+### Required Format
+
+```text
 <type>(<scope>): <short description>
+```
 
-Examples:
+### Allowed Commit Types
+
+- `feat`: A new feature. Correlates with **MINOR** in SemVer.
+- `fix`: A bug fix.
+- `docs`: Documentation only changes.
+- `style`: Changes that do not affect the meaning of the code (white-space, formatting, missing semicolons, etc.).
+- `refactor`: A code change that neither fixes a bug nor adds a feature.
+- `perf`: A code change that improves performance.
+- `test`: Adding missing or correcting existing tests.
+- `build`: Changes that affect the build system or external dependencies (example scopes: `pip`, `docker`, `npm`).
+- `ci`: Changes to CI configuration files and scripts (example scopes: `GitLabCI`).
+- `chore`: Maintenance tasks, dependency housekeeping, or tooling changes not covered above.
+
+### Commit Rules
+
+- Use the **imperative mood** in the description, for example `add`, not `added`.
+- Keep the first line under **72 characters**.
+- Add the related issue in the commit body when applicable, for example `Closes #42`.
+- Note that **branch types** and **commit types** are not always the same; for example, a `feature/...` branch will usually contain a `feat(...)` commit.
+
+### Commit Examples
+
+```text
 feat(checker): add support for pacman package manager
 fix(apt): handle empty version string in parser
 docs(readme): add installation instructions
-chore(deps): bump requests to 2.31.0
+style(lint): reformat shell scripts
 refactor(core): simplify update detection logic
+perf(parser): reduce package scan overhead
 test(dnf): add unit tests for version comparison
-
-Rules:
-- Use the **imperative mood** in the description ("add", not "added")
-- Keep the first line under **72 characters**
-- Reference the issue number in the body when applicable: `Closes #42`
+build(docker): update base image to python 3.12
+ci(gitlab): run tests on merge requests
+chore(deps): bump requests to 2.31.0
+```
 
 ---
 
