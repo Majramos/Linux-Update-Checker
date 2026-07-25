@@ -4,10 +4,10 @@ from urllib.error import HTTPError, URLError
 import pytest
 
 from linux_update_checker.messenger.discord import (
-    DISCORD_EMBED_COLOR_ERROR,
-    DISCORD_EMBED_COLOR_OK,
-    DISCORD_EMBED_COLOR_SECURITY,
-    DISCORD_EMBED_COLOR_UPDATES,
+    COLOR_ERROR,
+    COLOR_OK,
+    COLOR_SECURITY,
+    COLOR_UPDATES,
     _package_list_preview,
     build_discord_payload,
     send_discord,
@@ -50,7 +50,7 @@ def test_build_discord_payload_uses_error_status_when_all_results_fail(monkeypat
     embed = payload["embeds"][0]
 
     assert embed["title"] == "⚠️ Update check encountered errors"
-    assert embed["color"] == DISCORD_EMBED_COLOR_ERROR
+    assert embed["color"] == COLOR_ERROR
     assert embed["footer"]["text"] == "🖥  host1  •  2026-04-21 10:11:12"
     assert embed["fields"] == [
         {"name": "❌ apt", "value": "```boom```", "inline": False}
@@ -87,7 +87,7 @@ def test_build_discord_payload_uses_security_status_and_mixed_fields(monkeypatch
     embed = payload["embeds"][0]
 
     assert embed["title"] == "🔴 2 update(s) available — 1 security!"
-    assert embed["color"] == DISCORD_EMBED_COLOR_SECURITY
+    assert embed["color"] == COLOR_SECURITY
     assert embed["footer"]["text"] == "🖥  unknown-host  •  2026-01-02 03:04:05"
     assert embed["fields"] == [
         {
@@ -109,7 +109,7 @@ def test_build_discord_payload_uses_updates_status_without_security():
     embed = payload["embeds"][0]
 
     assert embed["title"] == "🟠 3 update(s) available"
-    assert embed["color"] == DISCORD_EMBED_COLOR_UPDATES
+    assert embed["color"] == COLOR_UPDATES
 
 
 def test_build_discord_payload_uses_ok_status_when_no_updates():
@@ -119,7 +119,7 @@ def test_build_discord_payload_uses_ok_status_when_no_updates():
     embed = payload["embeds"][0]
 
     assert embed["title"] == "✅ System is up to date"
-    assert embed["color"] == DISCORD_EMBED_COLOR_OK
+    assert embed["color"] == COLOR_OK
 
 
 def test_build_discord_payload_truncates_error_text_to_500_chars():

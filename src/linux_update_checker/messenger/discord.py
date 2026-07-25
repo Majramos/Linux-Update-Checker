@@ -7,10 +7,10 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from linux_update_checker.constants import (
-    DISCORD_EMBED_COLOR_ERROR,
-    DISCORD_EMBED_COLOR_OK,
-    DISCORD_EMBED_COLOR_SECURITY,
-    DISCORD_EMBED_COLOR_UPDATES,
+    COLOR_ERROR,
+    COLOR_OK,
+    COLOR_SECURITY,
+    COLOR_UPDATES,
 )
 from linux_update_checker.models import UpdateResult
 
@@ -35,17 +35,17 @@ def build_discord_payload(results: list[UpdateResult]) -> dict:
     has_error = any(r.error for r in results)
 
     if has_error and total_updates == 0:
-        color, title = DISCORD_EMBED_COLOR_ERROR, "⚠️ Update check encountered errors"
+        color, title = COLOR_ERROR, "⚠️ Update check encountered errors"
     elif total_security > 0:
-        color = DISCORD_EMBED_COLOR_SECURITY
+        color = COLOR_SECURITY
         title = f"🔴 {total_updates} update(s) available — {total_security} security!"
     elif total_updates > 0:
         color, title = (
-            DISCORD_EMBED_COLOR_UPDATES,
+            COLOR_UPDATES,
             f"🟠 {total_updates} update(s) available",
         )
     else:
-        color, title = DISCORD_EMBED_COLOR_OK, "✅ System is up to date"
+        color, title = COLOR_OK, "✅ System is up to date"
 
     fields = []
     for r in results:
