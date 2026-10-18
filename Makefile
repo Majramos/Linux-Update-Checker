@@ -1,6 +1,6 @@
 .RECIPEPREFIX := $() $()
 
-.PHONY: install fmt lint style test verify clean notify
+.PHONY: install fmt lint style test verify clean notify setup-pre-commit
 
 install:
     uv sync
@@ -26,3 +26,7 @@ clean:
 
 notify:
     uv run --env-file .env linux-update-checker
+
+setup-pre-commit:
+    uv run pre-commit install
+    uv run pre-commit install --hook-type commit-msg
