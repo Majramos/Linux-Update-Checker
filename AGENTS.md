@@ -112,11 +112,6 @@ Run:
 uv run pytest
 ```
 
-For faster feedback, target a subset while iterating:
-
-```bash
-uv ru
-
 # Change workflow
 
 When making code changes, follow this order:
