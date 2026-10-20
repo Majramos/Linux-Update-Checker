@@ -264,9 +264,11 @@ def test_send_discord_logs_and_raises_on_network_and_generic_errors(
 
     monkeypatch.setattr("linux_update_checker.messenger.discord.urlopen", fake_urlopen)
 
-    with caplog.at_level("ERROR", logger="linux_update_checker"):
-        with pytest.raises(DiscordSendError):
-            send_discord("https://discord.example/webhook", {"ok": True})
+    with (
+        caplog.at_level("ERROR", logger="linux_update_checker"),
+        pytest.raises(DiscordSendError),
+    ):
+        send_discord("https://discord.example/webhook", {"ok": True})
 
     assert expected_message in caplog.text
 
@@ -281,9 +283,11 @@ def test_send_discord_logs_and_raises_on_http_error(monkeypatch, caplog):
 
     monkeypatch.setattr("linux_update_checker.messenger.discord.urlopen", fake_urlopen)
 
-    with caplog.at_level("ERROR", logger="linux_update_checker"):
-        with pytest.raises(DiscordSendError):
-            send_discord("https://discord.example/webhook", {"ok": True})
+    with (
+        caplog.at_level("ERROR", logger="linux_update_checker"),
+        pytest.raises(DiscordSendError),
+    ):
+        send_discord("https://discord.example/webhook", {"ok": True})
 
     assert 'Discord HTTP 400: {"message": "invalid webhook"}' in caplog.text
 
@@ -298,9 +302,11 @@ def test_send_discord_logs_and_raises_on_http_429_with_retry_after(monkeypatch, 
 
     monkeypatch.setattr("linux_update_checker.messenger.discord.urlopen", fake_urlopen)
 
-    with caplog.at_level("ERROR", logger="linux_update_checker"):
-        with pytest.raises(DiscordSendError) as exc_info:
-            send_discord("https://discord.example/webhook", {"ok": True})
+    with (
+        caplog.at_level("ERROR", logger="linux_update_checker"),
+        pytest.raises(DiscordSendError) as exc_info,
+    ):
+        send_discord("https://discord.example/webhook", {"ok": True})
 
     assert str(exc_info.value) == "Discord rate-limited, retry after 3s"
     assert "Discord rate-limited, retry after 3s" in caplog.text
@@ -318,9 +324,11 @@ def test_send_discord_logs_and_raises_on_http_429_with_invalid_json(
 
     monkeypatch.setattr("linux_update_checker.messenger.discord.urlopen", fake_urlopen)
 
-    with caplog.at_level("ERROR", logger="linux_update_checker"):
-        with pytest.raises(DiscordSendError) as exc_info:
-            send_discord("https://discord.example/webhook", {"ok": True})
+    with (
+        caplog.at_level("ERROR", logger="linux_update_checker"),
+        pytest.raises(DiscordSendError) as exc_info,
+    ):
+        send_discord("https://discord.example/webhook", {"ok": True})
 
     assert str(exc_info.value) == "Discord rate-limited, retry after unknowns"
     assert "Discord rate-limited, retry after unknowns" in caplog.text
