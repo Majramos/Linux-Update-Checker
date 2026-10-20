@@ -10,7 +10,7 @@ def test_run_subprocess_success(monkeypatch):
         stdout = "hello\n"
         stderr = ""
 
-    def fake_run(cmd, capture_output, text, timeout):
+    def fake_run(cmd, check, capture_output, text, timeout):
         assert cmd == ["echo", "hello"]
         assert capture_output is True
         assert text is True
@@ -25,7 +25,7 @@ def test_run_subprocess_success(monkeypatch):
 
 
 def test_run_subprocess_timeout(monkeypatch):
-    def fake_run(cmd, capture_output, text, timeout):
+    def fake_run(cmd,  check, capture_output, text, timeout):
         raise subprocess.TimeoutExpired(cmd=cmd, timeout=timeout)
 
     monkeypatch.setattr(subprocess, "run", fake_run)
@@ -36,7 +36,7 @@ def test_run_subprocess_timeout(monkeypatch):
 
 
 def test_run_subprocess_command_not_found(monkeypatch):
-    def fake_run(cmd, capture_output, text, timeout):
+    def fake_run(cmd, check, capture_output, text, timeout):
         raise FileNotFoundError
 
     monkeypatch.setattr(subprocess, "run", fake_run)
@@ -46,12 +46,22 @@ def test_run_subprocess_command_not_found(monkeypatch):
     assert result == (127, "", "Command not found: missing-binary")
 
 
-def test_run_subprocess_generic_exception(monkeypatch):
-    def fake_run(cmd, capture_output, text, timeout):
-        raise RuntimeError("boom")
+def test_run_subprocess_permission_error(monkeypatch):
+    def fake_run(cmd, check, capture_output, text, timeout):
+        raise PermissionError("boom")
 
     monkeypatch.setattr(subprocess, "run", fake_run)
 
     result = run_subprocess(["anything"])
 
-    assert result == (1, "", "boom")
+    assert result == (126, "", "Permission denied: anything")
+
+def test_run_subprocess_os_error(monkeypatch):
+    def fake_run(cmd, check, capture_output, text, timeout):
+        raise OSError("boom")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    result = run_subprocess(["anything"])
+
+    assert result == (1, "", "Failed to execute anything: boom")

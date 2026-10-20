@@ -3,6 +3,7 @@ import os
 import sys
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
+from typing import ClassVar
 
 _TRUTHY = {"1", "true", "yes", "on"}
 
@@ -39,14 +40,14 @@ class ColourFormatter(logging.Formatter):
     Falls back to plain text in non-TTY environments (e.g. cron output redirect).
     """
 
-    COLOURS = {
+    COLOURS: ClassVar = {
         logging.DEBUG: "\033[36m",  # cyan
         logging.INFO: "\033[32m",  # green
         logging.WARNING: "\033[33m",  # yellow
         logging.ERROR: "\033[31m",  # red
         logging.CRITICAL: "\033[1;31m",  # bold red
     }
-    RESET = "\033[0m"
+    RESET: ClassVar = "\033[0m"
 
     def format(self, record: logging.LogRecord) -> str:
         if sys.stdout.isatty():
