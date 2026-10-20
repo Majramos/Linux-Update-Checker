@@ -25,7 +25,7 @@ def test_run_subprocess_success(monkeypatch):
 
 
 def test_run_subprocess_timeout(monkeypatch):
-    def fake_run(cmd,  check, capture_output, text, timeout):
+    def fake_run(cmd, check, capture_output, text, timeout):
         raise subprocess.TimeoutExpired(cmd=cmd, timeout=timeout)
 
     monkeypatch.setattr(subprocess, "run", fake_run)
@@ -55,6 +55,7 @@ def test_run_subprocess_permission_error(monkeypatch):
     result = run_subprocess(["anything"])
 
     assert result == (126, "", "Permission denied: anything")
+
 
 def test_run_subprocess_os_error(monkeypatch):
     def fake_run(cmd, check, capture_output, text, timeout):
