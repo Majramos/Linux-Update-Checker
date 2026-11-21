@@ -66,3 +66,13 @@ check for active cron jobs
 ```bash
 crontab -l
 ```
+
+## Contribute
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before you propose a change.
+
+Follow the [Code of Conduct](CODE_OF_CONDUCT.md) in all project communication.
+
+## License
+
+This project uses the [GNU General Public License v3.0](LICENSE).
